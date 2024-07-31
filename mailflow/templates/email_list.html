@@ -1,0 +1,39 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email List</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            const source = new WebSocket('ws://' + window.location.host + '/ws/progress/');
+            source.onmessage = function(event) {
+                const data = JSON.parse(event.data);
+                $('#progress-bar').css('width', data.progress + '%').text(data.progress + '%');
+                if (data.message) {
+                    $('#email-list').append('<tr><td>' + data.message.subject + '</td><td>' + data.message.sent_date + '</td><td>' + data.message.received_date + '</td><td>' + data.message.body + '</td></tr>');
+                }
+            };
+        });
+    </script>
+</head>
+<body>
+    <h1>Email List</h1>
+    <div id="progress-container">
+        <div id="progress-bar" style="width: 0%; background-color: green; height: 30px;"></div>
+    </div>
+    <table id="email-list">
+        <thead>
+            <tr>
+                <th>Subject</th>
+                <th>Sent Date</th>
+                <th>Received Date</th>
+                <th>Body</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Rows will be added here by JavaScript -->
+        </tbody>
+    </table>
+</body>
+</html>
